@@ -1,0 +1,118 @@
+1)
+void colegiovotado(nodoColegio *colegios){
+    int contadoraux=0;
+    int contador=-1;
+    int idaux;
+    int idco;
+   if(colegios!=NULL){
+    while(colegios!=NULL){
+        nodoUrna *urb=colegios->urnas;
+        while(urb!=NULL){
+            nodoVoto *votob=urb->votos;
+            while(votob!=NULL){
+                contadoraux++;
+                votob=votob->sig;
+
+            }
+            urb=urb->sig;
+        }
+        idaux=colegios->idColegio;
+        if(contador==-1){
+            contador=contadoraux;
+            idco=idaux;
+            }else if(contadoraux>contador){
+                contador=contadoraux;
+                idco=idaux;
+            }
+        colegios=colegios->sig;
+    }
+
+    cout<<"id partido: "<<idco<<endl;
+    cout<<"Votos: "<<contador<<endl;
+   }else{
+    cout<<"No existen nodos"<<endl;
+   }
+
+};
+
+2)
+void ResultadoVotaciones(nodoColegio *colegios){
+    //creo un puntero a una tabla con valores enteros
+    int *tabla =new int[maxlist];
+    //creo una varible para almacenar el tamaño de la tabla
+    int tam=maxlist;
+    //realizo un bucle para rellenar las posiciones con 0 y
+    //así inicializarlo
+    for(int i=0;i<maxlist;i++){
+        tabla[i]=0;
+    }
+    //creo un bucle para colegios y que lo recorra hasta que no sea null
+    while(colegios!=NULL){
+        //creo un puntero a la urna que apunta en este momento colegio
+        nodoUrna *purna=colegios->urnas;
+        //creo un bucle para el puntero anterior y que se recorra hasta que no sea nulo
+        while(purna!=NULL){
+            //creo un puntero que apunte a los votos que marca dicha urna
+            nodoVoto *nvoto=purna->votos;
+            //creo un bucle para el puntero anterior hasta que sea nulo
+            while(nvoto!=NULL){
+                //en caso de que la tabla se quede pequeña se agrandara con el valor
+                //de una variable (#define maxlist 5)
+                if(tam%maxlist==0){
+                int *nuevov=new int[tam+maxlist];
+                    if(nuevov==NULL){
+                        cout<<"Sin memoria"<<endl;
+                        }else{
+                            for(int j=0;j<tam;j++){
+                                nuevov[j]=tabla[j];
+                                delete [] tabla;
+                                tabla = nuevov;
+                                delete [] nuevov;
+                                }
+                            }
+                        }
+                //se aumenta en la poscionen del identificador del patido
+                //en 1 por cada voto que encuentre
+                tabla[nvoto->idPartido]+=1;
+                //hago que el puntero ahora marque al siguiente nodo voto
+                nvoto=nvoto->sig;
+            }
+            //hago que el puntero ahora marque al siguiente nodo urna
+            purna=purna->sig;
+
+        }
+        //hago que el puntero ahora marque al siguiente nodo colegio
+        colegios=colegios->sig;
+    }
+
+
+};
+
+
+3)
+void eliminaMemoria(nodoColegio *colegios){
+    nodoColegio *colegiosaux;
+    while(colegios!=NULL){
+        nodoUrna *urnab=colegios->urnas;
+        nodoUrna *urnaaux;
+        while(urnab!=NULL){
+            nodoVoto *votob=urnab->votos;
+            nodoVoto *votoaux;
+            while(votob!=NULL){
+                votoaux=votob;
+                votob=votoaux->sig;
+                delete votoaux;
+
+            }
+            urnaaux=urnab;
+            urnab=urnaaux->sig;
+            delete urnaaux;
+        }
+       colegiosaux=colegios;
+       colegios=colegiosaux->sig;
+       delete colegiosaux;
+    }
+
+
+
+};
