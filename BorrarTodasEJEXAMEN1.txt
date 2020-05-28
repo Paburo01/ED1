@@ -1,0 +1,47 @@
+#include <iostream>
+#
+using namespace std;
+struct TNodo {
+    float dato;
+    TNodo *sig;
+};
+
+void Borrartodas (TNodo **punt, float x);
+int main()
+{
+    TNodo *punt;
+    float x;
+
+cout << "Pon el numero que quieres quitar de la lista : ";
+cin >> x;
+
+
+Borrartodas  (&punt, x);
+    return 0;
+}
+
+
+
+void Borrartodas (TNodo **punt, float x){
+    TNodo *p=*punt;
+    TNodo *anterior;
+    while(p!=NULL){
+        if(p->dato==x){
+                //significa que esta apuntado por punt
+            if(p==*punt){
+                *punt=*punt->sig;
+                delete p;
+                p=*punt;
+                }else{
+                    anterior->sig=p->sig;
+                    delete p;
+                    p=anterior;
+                    }
+            }else{
+                anterior=p;
+            }
+            p=p->sig;
+        }
+
+
+};
