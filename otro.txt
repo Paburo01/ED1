@@ -1,0 +1,19 @@
+void devolverparimpar(tnodo *p){
+    Tnodo *aux=p;
+    int par=0;
+    int impar=0;
+    while(aux!=NULL){
+        if(aux->dato%2==0){
+            par++;
+        }else{
+            impar++;
+        }
+        aux=aux->siguiente;
+
+    }
+
+    cout<<"Numero par: "<<par<<endl;
+    cout<<"Numero impar: "<<impar;
+
+
+};
