@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <cstdlib>
+#include <fstream>
+#define maxlist 5
+using namespace std;
+
+typedef char cadena[50];
+
+struct NPlaza
+{
+ int numplz;//número de la plaza ocupada
+cadena matricula; //matrícula del vehículo que ocupa la plaza
+ NPlaza *sigplz;
+};
+struct NPlanta
+{
+ int numplt;//número de la planta
+ NPlaza *nplz;
+ NPlanta *sigplt;
+};
+class Parking
+{
+// TIPOS Y ATRIBUTOS PRIVADOS
+ int plazas;//Plazas ocupadas hasta ese momento
+ int total;//Total de plazas del parking
+ int plazasporplanta; //Nº de plazas por planta (el parking tiene un número de plazas uniforme)
+ NPlanta *plantas;
+// MÉTODOS
+public:
+// Ocupar la plaza número plz de la planta plt con el vehículo cuya matrícula es mat.
+void Aparcar(int plt, int plz, cadena mat); //(1.5 puntos)
+//Devuelve la planta y la plaza donde se encuentra el primer sitio libre.
+
+
+};
+
+int main()
+{
+
+    return 0;
+}
+
+void Parking::Aparcar(int plt, int plz, cadena mat){
+    bool encontrado=false;
+    NPlanta *auxp=plantas;
+    if(plazas<total){
+        while(!encontrado && auxp!=NULL){
+            if(auxp->numplt==plt){
+                encontrado=true;
+                }else{
+                    auxp=auxp->sigplt;
+                    }
+            }
+        if(auxp!=NULL){
+            NPlaza *auxpz=auxp->nplz;
+            while(auxpz!=NULL){
+                if(auxpz->numplz==plz){
+                    strcpy(auxpz->matricula,mat);
+                    }else{
+                        auxpz=auxpz->sigplz;
+                        }
+                }
+
+            }else{
+                cout<<"No se ha encontrado la plaza indicada"<<endl;
+                }
+
+        }else{
+            cout<<"No hay plazas  disponibles"<<endl;
+
+            }
+
+};

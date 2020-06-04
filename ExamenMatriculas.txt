@@ -1,0 +1,130 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <cstdlib>
+#include <fstream>
+#define maxlist 5
+using namespace std;
+
+typedef char cadena[50];
+
+struct NodoAlum {
+ cadena dni;
+ NodoAlum *sig;
+};
+
+struct NodoAsig {
+ int codigo;//Código asignatura
+ cadena nombre; //nombre descriptivo de la asignatura
+NodoAsig *sig; //siguiente asignatura
+ NodoAlum *alumnos; //alumnos matriculados en la asignatura
+};
+
+struct NodoCurso {
+ int codigo;//Código curso
+NodoCurso *sig; //siguiente curso
+ NodoAsig *asignaturas; //asignaturas cursadas en el curso en cuestión
+};
+
+class matricula {
+cadena titulacion;
+NodoCurso *cursos;
+ public:
+    void InsertarMatricula (cadena dni, int asig, cadena nomasig, int curso);
+    void ObtenerMatriculasAsig(int asig);
+    void ObtenerMatriculasAlum (cadena dni);
+    ~matricula();
+
+};
+int main()
+{
+
+
+    return 0;
+}
+
+
+
+
+void matricula::ObtenerMatriculasAsig(int asig){
+    int contador=0;
+    bool encontrado=false;
+    bool encontrada=false;
+    NodoCurso *auxcurso=cursos;
+    while(auxcurso!=NULL && !encontrado){
+        NodoAsig *auxasig=auxcurso->asignaturas;
+        while(auxasig!=NULL && !encontrada){
+        if(auxasig->codigo==asig){
+            NodoAlum *auxalum=auxasig->alumnos;
+            while(auxalum!=NULL){
+                contador++;
+                auxalum=auxalum->sig;
+            }
+            encontrada=true;
+            encontrado=true;
+        }else{
+            auxasig=auxasig->sig;
+        }
+        }
+        auxcurso=auxcurso->sig;
+    }
+
+    cout<<"Numero de alumnos en una asignatura"<<contador;
+
+};
+
+
+void matricula::ObtenerMatriculasAlum(cadena dni){
+    int contador=0;
+    NodoCurso  *auxcurso=cursos;
+    //pongo unicamente esta condicion ya que el alumno
+    //puede estar matriculado en distantas asignaturas
+    //de distintos cursos
+    while(auxcurso!=NULL){
+        NodoAsig *auxasig=auxcurso->asignaturas;
+        while(auxasig!=NULL){
+            NodoAlum *alumaux=auxasig->alumnos;
+            while(alumaux!=NUL){
+            if(strcmp(alumaux->dni,dni)==0){
+                contador++;
+            }
+            alumaux=alumaux->sig;
+            }
+            auxasig=auxasig->sig;
+        }
+        auxcurso=auxcurso->sig;
+    }
+
+    cout<<"Numero de asignatura: "<<contador<<endl;
+};
+
+
+
+matricula::~matricula(){
+    NodoCurso *auxcurso=cursos;
+    NodoCurso *borrarcurso;
+    while(auxcurso!=NULL){
+        NodoAsig *auxasig=auxcurso->asignaturas;
+        NodoCurso *borrarasig;
+        while(auxasig!=NULL){
+            NodoAlum *auxalum=auxasig->alumnos;
+            NodoAlum *borraralum;
+            while(auxalum!=NULL){
+                borraralum=auxalum;    
+                auxalum=auxalum->sig;
+                delete borraralum;
+            }
+            
+            borrarasig=auxasig;
+            auxasig=auxasig->sig;
+            delete borrarasig;
+        }
+        
+        borrarcurso=auxcurso;
+        auxcurso=auxcurso->sig;
+        delete borrarcurso;
+    }
+    
+
+};
