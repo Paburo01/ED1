@@ -1,0 +1,481 @@
+#include <iostream>
+#include <conio.h>
+#include <string.h>
+using namespace std;
+
+    const int TAM_CADENA = 30;
+    typedef char cadena[TAM_CADENA];
+
+
+struct Tnodo {
+int dato;
+Tnodo *siguiente; //estructura simplemente enlazada circular
+};
+
+class examen {
+Tnodo * impares; //estructura simplemente enlazada circular
+Tnodo * pares; //estructura simplemente enlazada circular
+Tnodo * L; //estructura simplemente enlazada circular
+public:
+examen();
+void mezclar();
+void introducir(int n);
+void eliminar();
+void mostrar();
+};
+
+examen::examen(){
+    impares=NULL;
+    pares=NULL;
+    L=NULL;
+};
+
+void examen::mezclar(){
+   Tnodo *par=pares;
+    Tnodo *impar=impares;
+    Tnodo *guial;
+    if(L!=NULL){
+        Tnodo *pos;
+        Tnodo *auxpos=L;
+        while(auxpos->siguiente!=L){
+            pos=auxpos;
+            auxpos=auxpos->siguiente;
+            delete pos;
+        }
+            delete auxpos;
+            L=NULL;
+    }
+
+    if(par!=NULL || impar!=NULL){
+
+
+        //NO SON NULO LOS PUNTEROS PAR Y PAR
+        if(par!=NULL && impar!=NULL){
+            while(par->siguiente!=pares && impar->siguiente!=impares){
+                    Tnodo *nuevo=new Tnodo;
+                if(L!=NULL){
+                    if(impar->dato<par->dato){
+                            //si no hubiera nodos y fuera el primero impar
+
+                            nuevo->dato=impar->dato;
+                            nuevo->siguiente=L;
+                            guial->siguiente=nuevo;
+                            impar=impar->siguiente;
+                            guial=nuevo;
+
+                        }else{
+                            //si no hubiera nodos y fuera el primero par
+
+                            nuevo->dato=par->dato;
+                            nuevo->siguiente=L;
+                            guial->siguiente=nuevo;
+                            par=par->siguiente;
+                            guial=nuevo;
+                        }
+                }else{
+                    if(impar->dato<par->dato){
+                            //si no hubiera nodos y fuera el primero impar
+
+                            nuevo->dato=impar->dato;
+                            nuevo->siguiente=L;
+                            L=nuevo;
+                            guial=L;
+                            impar=impar->siguiente;
+                        }else{
+                            //si no hubiera nodos y fuera el primero par
+
+                            nuevo->dato=par->dato;
+                            nuevo->siguiente=L;
+                            L=nuevo;
+                            guial=L;
+                            par=par->siguiente;
+                        }
+                }
+            }
+
+            //CUANDO EL BUCLE WHILE DE ARRIBA ACABE SIGNIFICA QUE HA ACABADO
+            //POR QUE EL SIGUIENTE DE PAR O IMPAR ES EL PRIMERO POR LO QUE
+            //TENEMOS QUE COMPARAR ESE ULTIMO NODO CON EL QUE TODAVIA NO HA ACABADO
+            //O SI LOS DOS HAN ACABADO COMPARA UNICAMENTE EL NODO QUE HAY EN CADA UNA.
+
+            //SE EJECUTA CUANDO EL SIGUIENTE DE IMPAR NO ES EL PRIMERO
+            if(impar->siguiente!=impares){
+                bool parn=false;
+                while(impar->siguiente!=impares){
+                    if(impar->dato<par->dato){
+                        Tnodo *nuevo=new Tnodo;
+                        nuevo->dato=impar->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo;
+                        impar=impar->siguiente;
+                    }else{
+                        Tnodo *nuevo=new Tnodo;
+                        par->dato=par->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo;
+                        parn=true;
+                    }
+                }
+
+                if(!parn){
+                    if(impar->dato<par->dato){
+                        Tnodo *nuevo=new Tnodo;
+                        Tnodo *nuevo2=new Tnodo;
+                        nuevo->dato=impar->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo;
+
+                        nuevo2->dato=par->dato;
+                        nuevo2->siguiente=L;
+                        guial->siguiente=nuevo2;
+
+                    }else{
+                        Tnodo *nuevo=new Tnodo;
+                        Tnodo *nuevo2=new Tnodo;
+
+                        nuevo->dato=par->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo; //bucle infinito
+
+                        nuevo2->dato=impar->dato;
+                        nuevo2->siguiente=L;
+                        guial->siguiente=nuevo2;
+
+                    }
+                }else{
+                    Tnodo *nuevo=new Tnodo;
+                    nuevo->dato=impar->dato;
+                    nuevo->siguiente=L;
+                    guial->siguiente=nuevo;
+                }
+                //SE EJECUTA CUANDO EL SIGUIENTE DE PAR NO ES EL PRIMERO
+            }else if(par->siguiente!=par){
+                bool impn=false;
+                while(par->siguiente!=pares){
+                    if(par->dato<impar->dato){
+                        Tnodo *nuevo=new Tnodo;
+                        nuevo->dato=par->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo;
+                        par=par->siguiente;
+                    }else{
+                        Tnodo *nuevo=new Tnodo;
+                        nuevo->dato=impar->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo;
+                        impn=true;
+                    }
+                }
+
+                if(!impn){
+                    if(par->dato<impar->dato){
+                        Tnodo *nuevo=new Tnodo;
+                        Tnodo *nuevo2=new Tnodo;
+                        nuevo->dato=par->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo;
+
+                        nuevo2->dato=impar->dato;
+                        nuevo2->siguiente=L;
+                        guial->siguiente=nuevo2;
+
+                    }else{
+                        Tnodo *nuevo=new Tnodo;
+                        Tnodo *nuevo2=new Tnodo;
+
+                        nuevo->dato=impar->dato;
+                        nuevo->siguiente=L;
+                        guial->siguiente=nuevo;
+                        guial=nuevo; //bucle infinito
+
+                        nuevo2->dato=par->dato;
+                        nuevo2->siguiente=L;
+                        guial->siguiente=nuevo2;
+
+                    }
+                }else{
+                    Tnodo *nuevo=new Tnodo;
+                    nuevo->dato=par->dato;
+                    nuevo->siguiente=L;
+                    guial->siguiente=nuevo;
+                }
+            //SE EJECUTA CUANDO NO SE CUMPLA NI EL IF NO EL ELSE IF DE ARRIBA
+            //LO QUE SIGNIFICA QUE EXISTE SOLO UN NODO EN IMPAR Y OTRO NODO EN PAR
+            }else{
+                //se ejecuta esta parte cuando solo haya 1 elemento en
+                //par y otro en impar
+                if(impar->dato<par->dato){
+                    Tnodo *nuevo1=new Tnodo;
+                    Tnodo *nuevo2=new Tnodo;
+
+                    nuevo1->dato=impar->dato;
+                    nuevo1->siguiente=L;
+                    L=nuevo1;
+                    guial=L;
+
+
+                    nuevo2->dato=par->dato;
+                    nuevo2->siguiente=L;
+                    guial->siguiente=nuevo2;
+
+                }else{
+                    Tnodo *nuevo1=new Tnodo;
+                    Tnodo *nuevo2=new Tnodo;
+
+                    nuevo1->dato=par->dato;
+                    nuevo1->siguiente=L;
+                    L=nuevo1;
+                    guial=L;
+
+                    nuevo2->dato=impar->dato;
+                    nuevo2->siguiente=L;
+                    guial->siguiente=nuevo2;
+                }
+            }
+
+
+
+
+
+
+        //UNICAMENTE ES IMPAR DISTINTO DE NULL (SOLO EXISTEN NUMERO IMPARES)
+        }else if(impar!=NULL){
+            //solo impar
+            while(impar->siguiente!=impares){
+                Tnodo *nuevo=new Tnodo;
+            if(L!=NULL){
+                //hay elementos
+                nuevo->dato=impar->dato;
+                guial->siguiente=nuevo;
+                nuevo->siguiente=L;
+                impar=impar->siguiente;
+                guial=guial->siguiente;
+
+            }else{
+                //NO hay elementos
+                Tnodo *nuevo=new Tnodo;
+                nuevo->dato=impar->dato;
+                L=nuevo;
+                nuevo->siguiente=L;
+                impar=impar->siguiente;
+                guial=L;
+            }
+
+        }
+
+        Tnodo *nuevo=new Tnodo;
+            if(L!=NULL){
+                //hay elementos
+                nuevo->dato=impar->dato;
+                guial->siguiente=nuevo;
+                nuevo->siguiente=L;
+
+            }else{
+                //NO hay elementos
+                Tnodo *nuevo=new Tnodo;
+                nuevo->dato=impar->dato;
+                L=nuevo;
+                nuevo->siguiente=L;
+            }
+
+
+            //UNICAMENTE EXISTE NUMEROS PARES
+            }else{
+            //solo par
+
+
+
+                while(par->siguiente!=pares){
+                    Tnodo *nuevo=new Tnodo;
+                if(L!=NULL){
+                    //hay elementos
+                    nuevo->dato=par->dato;
+                    guial->siguiente=nuevo;
+                    nuevo->siguiente=L;
+                    par=par->siguiente;
+                    guial=guial->siguiente;
+
+                }else{
+                    //NO hay elementos
+                    nuevo->dato=par->dato;
+                    L=nuevo;
+                    nuevo->siguiente=L;
+                    par=par->siguiente;
+                    guial=L;
+                }
+
+            }
+                    Tnodo *nuevo=new Tnodo;
+                    if(L!=NULL){
+                        //hay elementos
+                        nuevo->dato=par->dato;
+                        guial->siguiente=nuevo;
+                        nuevo->siguiente=L;
+
+                    }else{
+                        //NO hay elementos
+                        Tnodo *nuevo=new Tnodo;
+                        nuevo->dato=par->dato;
+                        L=nuevo;
+                        nuevo->siguiente=L;
+                    }
+            }
+
+
+
+    }else{
+        cout<<"\nLos vectores par e impar estan vacios"<<endl;
+    }
+
+};
+
+void examen::introducir(int n){
+    //es par
+    if(n%2==0){
+        //hay elementos
+       if(pares!=NULL){
+        Tnodo *nuevo=new Tnodo;
+        if(nuevo!=NULL){
+            nuevo->dato=n;
+            Tnodo *pos=pares;
+            while(pos->siguiente!=pares){
+                pos=pos->siguiente;
+            }
+            pos->siguiente=nuevo;
+            nuevo->siguiente=pares;
+        }else{
+            cout<<"Sin memoria"<<endl;
+        }
+        //no hay elementos
+       }else{
+        Tnodo *nuevo=new Tnodo;
+        if(nuevo!=NULL){
+            nuevo->dato=n;
+            pares=nuevo;
+            nuevo->siguiente=pares;
+        }else{
+            cout<<"Sin memoria"<<endl;
+            }
+        }
+
+     //es impar
+    }else{
+
+        if(impares!=NULL){
+        Tnodo *nuevo=new Tnodo;
+        if(nuevo!=NULL){
+            nuevo->dato=n;
+            Tnodo *pos=impares;
+            while(pos->siguiente!=impares){
+                pos=pos->siguiente;
+            }
+            pos->siguiente=nuevo;
+            nuevo->siguiente=impares;
+        }else{
+            cout<<"Sin memoria"<<endl;
+        }
+        //no hay elementos
+       }else{
+        Tnodo *nuevo=new Tnodo;
+        if(nuevo!=NULL){
+            nuevo->dato=n;
+            impares=nuevo;
+            nuevo->siguiente=impares;
+        }else{
+            cout<<"Sin memoria"<<endl;
+            }
+        }
+
+    }
+
+};
+
+
+void examen::eliminar(){
+    if(L!=NULL){
+        Tnodo *pos;
+        Tnodo *auxpos=L;
+        while(auxpos->siguiente!=L){
+            pos=auxpos;
+            auxpos=auxpos->siguiente;
+            delete pos;
+        }
+            delete auxpos;
+            L=NULL;
+    }
+
+     if(pares!=NULL){
+        Tnodo *pos;
+        Tnodo *auxpos=pares;
+        while(auxpos->siguiente!=pares){
+            pos=auxpos;
+            auxpos=auxpos->siguiente;
+            delete pos;
+        }
+            delete auxpos;
+            pares=NULL;
+    }
+
+    if(impares!=NULL){
+        Tnodo *pos;
+        Tnodo *auxpos=impares;
+        while(auxpos->siguiente!=impares){
+            pos=auxpos;
+            auxpos=auxpos->siguiente;
+            delete pos;
+        }
+            delete auxpos;
+            impares=NULL;
+    }
+
+};
+
+void examen::mostrar(){
+    if(L!=NULL){
+        Tnodo *auxl=L;
+        while(auxl->siguiente!=L){
+            cout<<auxl->dato<<"->";
+            auxl=auxl->siguiente;
+        }
+        cout<<"->"<<auxl->dato<<endl;
+
+    }else{
+        cout<<"\nEl vector L esta vacio"<<endl;
+    }
+
+};
+
+
+int main()
+{
+    int num;
+    examen opc;
+    char son;
+
+    do{
+        cout<<"\nIntroduce numero: ";
+        cin>>num;
+        opc.introducir(num);
+
+
+        cout<<"Quieres seguir introduciendo numeros S/N?: ";
+        son=toupper(getche());
+        cout<<endl;
+
+    }while(son=='S');
+
+    opc.mezclar();
+    opc.mostrar();
+
+
+    opc.eliminar();
+
+    return 0;
+}
