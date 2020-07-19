@@ -1,0 +1,54 @@
+#include <iostream>
+
+using namespace std;
+
+struct Tnodo {
+int dato;
+Tnodo *siguiente;
+};
+
+class examen {
+int * tabla;
+int n; //N. de elementos en tabla;
+Tnodo * elementos;
+public:
+void volcar();
+};
+
+void examen::volcar(){
+    Tnodo *aux=elementos;
+
+    if(n!=0){
+        delete [] tabla;
+        tabla=NULL;
+    }
+
+    if(aux!=NULL){
+        while(aux->siguiente!=elementos){
+            n++;
+            aux=aux->siguiente;
+        }
+        n++;
+
+        aux=elementos;
+        tabla=new int [n] ;
+
+        for(int i=0;i<n;i++){
+            tabla[i]=aux->dato;
+            elementos=elementos->siguiente;
+            delete aux;
+            aux=elementos;
+        }
+        elementos=NULL;
+    }else{
+        cout<<"No hay nodos"<<endl;
+        }
+
+
+}
+int main()
+{
+
+
+    return 0;
+}
