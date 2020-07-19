@@ -1,0 +1,42 @@
+#include <iostream>
+
+using namespace std;
+
+struct TNodo {
+char dato[4];
+TNodo *sig;
+};
+
+void numeranodos(TNodo **elementos);
+
+int main()
+{
+    TNodo *elementos;
+
+    return 0;
+}
+
+void numeranodos(TNodo **elementos){
+
+    TNodo *aux=*elementos;
+    TNodo *anterior;
+    int i=1;
+    while(aux!=NULL){
+        TNodo *nuevo=new TNodo;
+        if(nuevo!=NULL){
+            itoa(i,nuevo->dato,10);
+            if(aux==*elementos){
+                nuevo->sig=aux;
+                *elementos=nuevo;
+                anterior=aux;
+            }else{
+                aux=aux->sig;
+                nuevo->sig=aux;
+                anterior->sig=nuevo;
+                anterior=aux;
+
+            }
+     i++;
+        }
+    }
+}
