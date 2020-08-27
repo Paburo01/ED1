@@ -1,0 +1,219 @@
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+struct tnodo{
+int dato;
+ tnodo *sig;
+};
+class examen{
+ tnodo *L; //estructura simplemente enlazada de tnodos
+ tnodo *Uno; //estructura simplemente enlazada de tnodos
+ tnodo *Dos; //estructura simplemente enlazada de tnodos
+public:
+ examen(); //constructor ...
+ void insertarLista(int e);
+ void insertar(int i,int e);
+ void mezclar();
+ void ver();
+ void insertarUnoyDos(int a, int b);
+ void verUyD();
+};
+
+examen::examen(){
+    L=NULL;
+    Uno=NULL;
+    Dos=NULL;
+}
+void examen::verUyD(){
+     tnodo  *ver1=Uno;
+    while(ver1!=NULL){
+        cout<<"Dato1: "<<ver1->dato<<endl;
+        ver1=ver1->sig;
+    }
+    cout<<"\n-----"<<endl;
+    tnodo  *ver2=Dos;
+    while(ver2!=NULL){
+        cout<<"Dato2: "<<ver2->dato<<endl;
+        ver2=ver2->sig;
+    }
+
+}
+
+void examen::ver(){
+    tnodo  *ver=L;
+    while(ver!=NULL){
+        cout<<"Dato: "<<ver->dato<<endl;
+        ver=ver->sig;
+    }
+}
+
+void examen::insertarLista(int e){
+    tnodo *nuevo=new tnodo;
+    if(nuevo!=NULL){
+        nuevo->dato=e;
+        if(L!=NULL){
+            tnodo *aux=L;
+            while(aux->sig!=NULL){
+                aux=aux->sig;
+            }
+
+            aux->sig=nuevo;
+            nuevo->sig=NULL;
+        }else{
+            L=nuevo;
+            nuevo->sig=NULL;
+        }
+
+    }else{
+        cout<<"Sin memoria"<<endl;
+
+    }
+
+}
+
+void examen::insertar(int i,int e){
+    tnodo *nuevo=new tnodo;
+
+    if(nuevo!=NULL){
+         nuevo->dato=e;
+         tnodo *auxL=L;
+         int k=1;
+         if(i==1){
+            nuevo->sig=L;
+            L=nuevo;
+         }else{
+            while(k<i-1){
+                auxL=auxL->sig;
+                k++;
+                }
+            nuevo->sig=auxL->sig;
+            auxL->sig=nuevo;
+
+         }
+    }else{
+        cout<<"Sin memoria"<<endl;
+    }
+};
+
+void examen::insertarUnoyDos(int a, int b){
+tnodo *nuevo=new tnodo;
+    if(nuevo!=NULL){
+        nuevo->dato=a;
+        if(Uno!=NULL){
+            tnodo *aux1=Uno;
+            while(aux1->sig!=NULL){
+                aux1=aux1->sig;
+            }
+
+            aux1->sig=nuevo;
+            nuevo->sig=NULL;
+        }else{
+            Uno=nuevo;
+            nuevo->sig=NULL;
+        }
+
+    }else{
+        cout<<"Sin memoria"<<endl;
+
+    }
+
+    tnodo *nuevo2=new tnodo;
+    if(nuevo2!=NULL){
+        nuevo2->dato=b;
+        if(Dos!=NULL){
+            tnodo *aux2=Dos;
+            while(aux2->sig!=NULL){
+                aux2=aux2->sig;
+            }
+
+            aux2->sig=nuevo2;
+            nuevo2->sig=NULL;
+        }else{
+            Dos=nuevo2;
+            nuevo2->sig=NULL;
+        }
+
+    }else{
+        cout<<"Sin memoria"<<endl;
+
+    }
+
+
+}
+
+void examen::mezclar(){
+    tnodo *auxU=Uno;
+    tnodo *auxD=Dos;
+    tnodo *auxL=L;
+   while(auxU!=NULL || auxD!=NULL){
+        if(auxU!=NULL){
+            int NU=0;
+            if(L!=NULL){
+                while(auxL!=NULL){
+                    NU++;
+                    auxL=auxL->sig;
+                }
+                auxL=L;
+            }else{
+                NU=1;
+            }
+            int numeroI= (rand()% (NU+1));
+            insertar(numeroI,auxU->dato);
+            tnodo *borrar1=auxU;
+            auxU=auxU->sig;
+            delete borrar1;
+
+        }
+
+        if(auxD!=NULL){
+            int ND=0;
+            if(L!=NULL){
+                while(auxL!=NULL){
+                    ND++;
+                    auxL=auxL->sig;
+                }
+                auxL=L;
+            }else{
+                ND=1;
+            }
+            int numeroI= (rand()% (ND+1));
+            insertar(numeroI,auxD->dato);
+            tnodo *borrar2=auxD;
+            auxD=auxD->sig;
+            delete borrar2;
+
+
+        }
+
+   }
+
+}
+
+
+int main()
+{
+
+    examen a;
+    /*
+    a.insertarLista(1);
+    a.insertarLista(3);
+    a.insertarLista(5);
+    a.insertarLista(6);
+    a.ver();
+    cout<<"\n---------"<<endl;
+    a.insertar(5,99);
+    a.ver();
+*/
+
+    cout<<"\n---------"<<endl;
+    a.insertarUnoyDos(2,3);
+    a.insertarUnoyDos(6,4);
+    a.insertarUnoyDos(7,5);
+    a.verUyD();
+    cout<<"\n---------"<<endl;
+    a.mezclar();
+    a.ver();
+
+    return 0;
+}
