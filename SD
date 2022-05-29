@@ -1,0 +1,70 @@
+case 10:
+                        int pAlmacen,  pDia,  pMes, pAnio;
+                        Console.WriteLine("Introduzca dia");
+                        pDia = int.Parse(Console.ReadLine());
+
+                        Console.WriteLine("Introduzca mes");
+                        pMes = int.Parse(Console.ReadLine());
+
+                        Console.WriteLine("Introduzca anio");
+                        pAnio = int.Parse(Console.ReadLine());
+
+                        int neliminados=ser.EliminarProductosCaducados(pos, pDia, pMes, pAnio);
+                        Console.WriteLine("Se ha eliminado "+neliminados+" productos");
+
+                        if (ser.NProductos(pos) > 0)
+                        {
+                            Console.WriteLine("Listado del almacén " + nombre + " localizado en " + direccion);
+                            Console.WriteLine("********************************************************************");
+                            Console.WriteLine("CODIGO NOMBRE                                     PRECIO    CANTIDAD      FECHA CADUCIDAD");
+                            for (int i = 0; i < ser.NProductos(pos); i++)
+                            {
+                                tProducto = ser.ObtenerProducto(pos, i);
+                                Console.WriteLine(tProducto.GetIdProducto() + " " + tProducto.GetNombre() + " " + tProducto.GetPrecio() + " " + tProducto.GetCantidad() + " " + tProducto.GetCaducidad());
+
+                            }
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("No hay productos para mostrar");
+                            Console.ReadLine();
+                        }
+
+                        break;
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+    public int EliminarProductosCaducados(int pAlmacen, int pDia, int pMes, int pAnio)
+        {
+            int ncaducados = 0;
+            int i = 0;
+            if (AlmacenAbierto(pAlmacen))
+            {
+                ArrayList prod = Almacenes[pAlmacen].GetProductos();
+                while(i<Almacenes[pAlmacen].GetnProductos())
+                {
+                    TProducto aux = (TProducto)prod[i];
+                    String[] fecha = new string[3];
+
+                    fecha = aux.GetCaducidad().Split('/');
+                    if (pAnio > Int32.Parse(fecha[2]) || (pAnio == Int32.Parse(fecha[2]) && pMes > Int32.Parse(fecha[1])) || (pAnio == Int32.Parse(fecha[2]) && pMes == Int32.Parse(fecha[1]) && pDia > Int32.Parse(fecha[0])))
+                    {
+                        prod.RemoveAt(i);
+                        Almacenes[pAlmacen].SetnProductos(Almacenes[pAlmacen].GetnProductos() - 1);
+                        ncaducados++;
+                    }
+                    else {
+                        i++;
+                    }
+                }
+            }
+            else {
+                return -1;
+            }
+            return ncaducados;
+        }
